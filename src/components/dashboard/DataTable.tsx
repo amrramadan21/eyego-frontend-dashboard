@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { users } from "@/data/users";
+import writeXlsxFile from "write-excel-file/browser";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 type SortField = "name" | "email" | "role" | "status";
 type SortOrder = "asc" | "desc";
@@ -32,9 +35,52 @@ export default function DataTable() {
         return sortOrder === "asc" ? comparison : -comparison;
     });
 
-    // Pagination logic
-    const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
+    // Export filtered and sorted users to Excel
+    const handleExportExcel = async () => {
+        const data = [
+            [
+                { value: "ID" },
+                { value: "Name" },
+                { value: "Email" },
+                { value: "Role" },
+                { value: "Status" },
+            ],
 
+            ...sortedUsers.map((user) => [
+                { value: user.id },
+                { value: user.name },
+                { value: user.email },
+                { value: user.role },
+                { value: user.status },
+            ]),
+        ];
+
+        await writeXlsxFile(data).toFile("users.xlsx");
+    };
+
+    // Export filtered and sorted users to PDF
+    const handleExportPDF = () => {
+        const doc = new jsPDF();
+
+        autoTable(doc, {
+            head: [["ID", "Name", "Email", "Role", "Status"]],
+            body: sortedUsers.map((user) => [
+                user.id,
+                user.name,
+                user.email,
+                user.role,
+                user.status,
+            ]),
+        });
+
+        doc.save("users.pdf");
+    };
+
+    // Pagination logic
+    const totalPages = Math.max(
+        1,
+        Math.ceil(sortedUsers.length / itemsPerPage)
+    );
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
@@ -66,6 +112,22 @@ export default function DataTable() {
                     }}
                     className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 outline-none placeholder:text-gray-400 focus:border-slate-500 sm:max-w-sm"
                 />
+
+                <div className="flex gap-2 mt-2">
+                    <button
+                        onClick={handleExportExcel}
+                        className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+                    >
+                        Export Excel
+                    </button>
+
+                    <button
+                        onClick={handleExportPDF}
+                        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                    >
+                        Export PDF
+                    </button>
+                </div>
             </div>
 
             {/* Table */}
