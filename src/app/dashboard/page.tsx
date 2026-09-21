@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import StatCard from "@/components/dashboard/StatCard";
 import DataTable from "@/components/dashboard/DataTable";
+import RevenueChart from "@/components/dashboard/RevenueChart";
 import { useRouter } from "next/navigation";
 import { useSelector,useDispatch } from "react-redux";
 import { logout } from "@/features/auth/authSlice";
@@ -89,11 +90,14 @@ export default function Home() {
                         />
                     </div>
                        <section className="mt-8">
+                        <RevenueChart />
+                       </section>
+                       <section className="mt-8">
                             <h2 className="mb-4 text-xl font-semibold text-gray-800">
                                 Users
                             </h2>
 
-                            <DataTable />
+                            <DataTable /> 
                         </section>
                 </div>
             </section>
