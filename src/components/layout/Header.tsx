@@ -2,9 +2,10 @@ type HeaderProps = {
     title: string;
     userName: string;
     onMenuClick: () => void;
+    onLogout: () => void;
 };
 
-export default function Header({ title, userName, onMenuClick }: HeaderProps) {
+export default function Header({ title, userName, onMenuClick,onLogout }: HeaderProps) {
     return (
         <header className="flex items-center justify-between border-b border-gray-200 bg-white px-8 py-4">
             <button
@@ -14,7 +15,7 @@ export default function Header({ title, userName, onMenuClick }: HeaderProps) {
             >
                 ☰
             </button>
-            
+
             <div>
                 <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
                 <p className="text-sm text-gray-500">
@@ -22,8 +23,17 @@ export default function Header({ title, userName, onMenuClick }: HeaderProps) {
                 </p>
             </div>
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 font-semibold text-white">
-                {userName.charAt(0)}
+            <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 font-semibold text-white">
+                    {userName.charAt(0)}
+                </div>
+
+                <button
+                    onClick={onLogout}
+                    className="text-sm font-medium text-gray-600 hover:text-red-600"
+                >
+                    Logout
+                </button>
             </div>
         </header>
     );
