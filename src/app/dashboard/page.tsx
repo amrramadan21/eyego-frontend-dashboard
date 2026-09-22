@@ -51,7 +51,7 @@ export default function Home() {
                 onClose={() => setIsSidebarOpen(false)}
             />
 
-            <section className="flex-1">
+            <section className="min-w-0 flex-1">
                 <Header
                     title="Dashboard Overview"
                     userName="Amr"
@@ -59,7 +59,7 @@ export default function Home() {
                     onLogout={handleLogout}
                 />
 
-                <div className="p-8">
+                <div className="p-8 sm:p-8">
                     <h2 className="mb-6 text-xl font-semibold text-gray-800">
                         Overview
                     </h2>
